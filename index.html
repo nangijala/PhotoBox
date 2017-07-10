@@ -1,0 +1,276 @@
+<html>
+
+<div style="padding:20px;">
+
+<svg id="first" width="240" height="240" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    
+    <defs>
+        <radialGradient id="shadow_1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="50%" stop-color="#444" stop-opacity="1" />
+            <stop offset="50%" stop-color="#000" stop-opacity="0.3" />
+            <stop offset="55%" stop-color="#000" stop-opacity="0" />
+            
+            <stop offset="90%" stop-color="#000" stop-opacity="0" />
+            <stop offset="100%" stop-color="#000" stop-opacity="0.4" />
+        </radialGradient>
+    </defs>
+    
+    
+    <circle cx="70" cy="70" r="60" fill="#333" />
+    
+    <path id="progress_1" d="" fill="#0b0" />
+    
+    <circle cx="70" cy="70" r="60" fill="url(#shadow_1)" />
+    
+    <text id="seconds_1" x="70" y="80" text-anchor="middle" fill="#fff" style="font-size:24px; font-family:Arial;">0</text>
+    
+</svg>
+
+
+<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    
+    <defs>
+        <radialGradient id="shadow_2" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="50%" stop-color="#444" stop-opacity="1" />
+            <stop offset="50%" stop-color="#000" stop-opacity="0.3" />
+            <stop offset="55%" stop-color="#000" stop-opacity="0" />
+            
+            <stop offset="90%" stop-color="#000" stop-opacity="0" />
+            <stop offset="100%" stop-color="#000" stop-opacity="0.4" />
+        </radialGradient>
+        
+        <linearGradient id="G_green" x1="0" y1="0" x2="0" y2="0.9">
+            <stop offset="20%" stop-color="#0b0" />
+            <stop offset="90%" stop-color="#ff0" />
+        </linearGradient>
+        
+        <linearGradient id="G_red" x1="0" y1="0" x2="0" y2="0.9">
+            <stop offset="20%" stop-color="#f00" />
+            <stop offset="90%" stop-color="#ff0" />
+        </linearGradient>
+        
+        <radialGradient id="G_yellow" fy="100%" fx="50%" r="100%" cy="100%" cx="50%">
+            <stop offset="0%" stop-color="#ff0" stop-opacity="1" />
+            <stop offset="100%" stop-color="#ff0" stop-opacity="0" />
+        </radialGradient>
+        
+        <clipPath id="mask">
+            <path id="progress_2" d="" fill="#7b0" />
+        </clipPath>
+    </defs>
+    
+    
+    <circle cx="70" cy="70" r="60" fill="#333" />
+    
+    <path clip-path="url(#mask)" d="M70,70 L70,10 A60,60 0 0,1 70,130" fill="url(#G_green)" />
+    <path clip-path="url(#mask)" d="M70,70 L70,10 A60,60 0 0,0 70,130" fill="url(#G_red)" />
+    <path clip-path="url(#mask)" d="M10,70 L130,70 A60,60 0 0,1 10,70" fill="url(#G_yellow)" />
+    
+    
+    <rect x="69" y="10" width="2" height="120" fill="#000" fill-opacity="0.5" />
+    <rect x="10" y="69" width="120" height="2" fill="#000" fill-opacity="0.5" />
+    
+    <circle cx="70" cy="70" r="60" fill="url(#shadow_2)" />
+    
+    <text id="seconds_2" x="70" y="80" text-anchor="middle" fill="#fff" style="font-size:24px; font-family:Arial;">0</text>
+    
+</svg>
+
+
+<svg width="240" height="240" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    
+    <defs>
+        <radialGradient id="shadow_3" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="50%" stop-color="#444" stop-opacity="1" />
+            <stop offset="50%" stop-color="#000" stop-opacity="0.3" />
+            <stop offset="55%" stop-color="#000" stop-opacity="0" />
+            
+            <stop offset="90%" stop-color="#000" stop-opacity="0" />
+            <stop offset="100%" stop-color="#000" stop-opacity="0.4" />
+        </radialGradient>
+    </defs>
+    
+    
+    <circle cx="70" cy="70" r="60" fill="#333" />
+    
+    <path id="progress_3" d="" fill="#000" />
+    
+    
+    <rect x="69" y="10" width="2" height="120" fill="#000" fill-opacity="0.5" />
+    <rect x="10" y="69" width="120" height="2" fill="#000" fill-opacity="0.5" />
+    
+    <circle cx="70" cy="70" r="60" fill="url(#shadow_3)" />
+    
+    <text id="seconds_3" x="70" y="80" text-anchor="middle" fill="#fff" style="font-size:24px; font-family:Arial;">0</text>
+    
+</svg>
+
+
+</div>
+
+<label>Manual: <input id="toggle" type="checkbox" /></label>
+<br /><br />
+Position: <input id="manual" type="range" min="0" max="359" value="0" disabled />
+<br /><br />
+
+Seconds: <input id="speed" type="range" min="5" max="60" value="60" step="1" />
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script>
+
+$(function(){
+    var theTimer;
+    var theSeconds = 60;
+    
+    var radius = 60;
+    var offset = 10;
+    
+    var col_H = 120;
+    var col_S = 95;
+    var col_L = 48;
+    
+    var miliseconds = null;
+    
+    function hsl2rgb(H, S, L){
+        var R, G, B;
+        var t1, t2;
+        
+        H = H / 360;
+        S = S / 100;
+        L = L / 100;
+        
+        if ( S == 0 ) {
+            R = G = B = L;
+        } else {
+            function hue2rgb(t1, t2, t3) {
+                if (t3 < 0) t3 += 1;
+                if (t3 > 1) t3 -= 1;
+                
+                if (t3 * 6 < 1) return t2 + (t1 - t2) * 6 * t3;
+                if (t3 * 2 < 1) return t1;
+                if (t3 * 3 < 2) return t2 + (t1 - t2) * (2 / 3 - t3) * 6;
+                
+                return t2;
+            }
+            
+            var t1 = (L < 0.5) ? L * (1 + S) : L + S - L * S;
+            var t2 = 2 * L - t1;
+            
+            R = hue2rgb(t1, t2, H + 1/3);
+            G = hue2rgb(t1, t2, H);
+            B = hue2rgb(t1, t2, H - 1/3);
+        }
+        
+        return [
+            Math.round(R * 255), 
+            Math.round(G * 255), 
+            Math.round(B * 255)
+        ];
+    }
+    
+    function drawCoord(radius, degrees) {
+        var radians = degrees * Math.PI / 180;
+        
+        var rX = radius + offset + Math.sin(radians) * radius;
+        var rY = radius + offset - Math.cos(radians) * radius;
+        
+        var dir = (degrees > 180) ? 1 : 0;
+        
+        var coord = 'M' + (radius + offset) + ',' + (radius + offset) + ' ' + 
+                    'L' + (radius + offset) + ',' + offset + ' ' +
+                    'A' + radius + ',' + radius + ' 0 ' + dir + ',1 ' +
+                    rX + ',' + rY;
+        
+        return coord;
+    }
+    
+    
+    function updateTimer() {
+        var date = new Date();
+        
+        if ( miliseconds == null ) miliseconds = date.getTime();
+        
+        var diff    = (date.getTime() - miliseconds) % (1000 * theSeconds);
+        var degrees = 0.36 * diff / theSeconds;
+        var seconds = theSeconds - Math.floor(diff / 1000);
+        
+        update(degrees, seconds);
+    }
+    
+    function update(deg, sec) {
+        var RGB  = [];
+        var draw = drawCoord(radius, deg);
+        
+        $('#progress_1, #progress_2, #progress_3').attr('d', draw);
+        
+        col_H = 120 - Math.round(deg / 3);
+        RGB   = hsl2rgb(col_H, col_S, col_L);
+        
+        $('#progress_3').attr('fill', 'rgb(' + RGB.join(', ') + ')');
+        $('#seconds_1, #seconds_2, #seconds_3').html(sec);
+    }
+    
+    for ( var x = 0; x < 24; x++ ) {
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        
+        path.setAttributeNS(null, 'd', 'M70,70 L70,10 A60,60 0 0,1 77.3121,10.4472');
+        path.setAttributeNS(null, 'fill', '#333');
+        path.setAttributeNS(null, 'fill-opacity', 0.3);
+        path.setAttributeNS(null, 'stroke', '#333');
+        path.setAttributeNS(null, 'stroke-width', 1);
+        path.setAttributeNS(null, 'stroke-opacity', 0.4);
+        path.setAttributeNS(null, 'transform', 'rotate(' + ((x * 15) - 4) + ' 70 70)');
+        
+        
+        $('#first')[0].insertBefore(path, $('#progress_1')[0].nextSibling);
+    }
+    
+    function _start() {
+        theTimer = setInterval(updateTimer, 16);
+    }
+    
+    function _stop() {
+        clearInterval(theTimer);
+    }
+    
+    function _refresh() {
+        _stop();
+        _start();
+    }
+    
+    function _reset() {
+        _stop();
+        miliseconds = null;
+        _start();
+    }
+    
+    function _update() {
+        update(this.value, Math.floor(this.value * 100 / 360) + '%');
+    }
+    
+    document.querySelector('#toggle').onclick = function() {
+        var rangeI = document.querySelector('#manual');
+        rangeI.disabled = !this.checked;
+        
+        if (this.checked) {
+            _stop();
+            _update.call(rangeI);
+        } else {
+            _reset();
+        }
+    }
+    
+    document.querySelector('#speed').onchange = function() {
+        theSeconds = this.value;
+        _reset();
+    }
+    
+    document.querySelector('#manual').onchange = _update;
+    
+    _start();
+})
+
+</script>
+</html>
