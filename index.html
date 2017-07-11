@@ -48,18 +48,12 @@
     
     <circle cx="200" cy="200" r="190" fill="url(#shadow_2)" />
     
-    <text id="seconds_2" x="200" y="220" text-anchor="middle" fill="#fff" style="font-size:72px; font-family:Arial;">0</text>
+    <text id="seconds_2" x="200" y="230" text-anchor="middle" fill="#fff" style="font-size:96px; font-family:Arial;">0</text>
     
 </svg>
 
 </div>
 
-<label>Manual: <input id="toggle" type="checkbox" /></label>
-<br /><br />
-Position: <input id="manual" type="range" min="0" max="359" value="0" disabled />
-<br /><br />
-
-Seconds: <input id="speed" type="range" min="5" max="60" value="10" step="1" />
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -149,13 +143,14 @@ $(function(){
         var RGB  = [];
         var draw = drawCoord(radius, deg);
         
-        $('#progress_1, #progress_2, #progress_3').attr('d', draw);
+        $('#progress_2').attr('d', draw);
         
         col_H = 120 - Math.round(deg / 3);
         RGB   = hsl2rgb(col_H, col_S, col_L);
         
-        $('#progress_3').attr('fill', 'rgb(' + RGB.join(', ') + ')');
-        $('#seconds_1, #seconds_2, #seconds_3').html(sec);
+        $('#seconds_2').html(sec);
+        if(deg >= 359 )
+            _stop();
     }
     
     
@@ -167,10 +162,10 @@ $(function(){
         clearInterval(theTimer);
     }
     
-    function _refresh() {
-        _stop();
-        _start();
-    }
+    // function _refresh() {
+    //     _stop();
+    //     _start();
+    // }
     
     function _reset() {
         _stop();
@@ -181,25 +176,6 @@ $(function(){
     function _update() {
         update(this.value, Math.floor(this.value * 100 / 360) + '%');
     }
-    
-    document.querySelector('#toggle').onclick = function() {
-        var rangeI = document.querySelector('#manual');
-        rangeI.disabled = !this.checked;
-        
-        if (this.checked) {
-            _stop();
-            _update.call(rangeI);
-        } else {
-            _reset();
-        }
-    }
-    
-    document.querySelector('#speed').onchange = function() {
-        theSeconds = this.value;
-        _reset();
-    }
-    
-    document.querySelector('#manual').onchange = _update;
     
     _start();
 })
