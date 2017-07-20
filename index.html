@@ -54,13 +54,21 @@
 
 </div>
 
-
+<button type="button" class="btn_stop">Click</button>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
 <script>
 
 $(function(){
+
+$('.btn_stop').click( function(){
+	socket.emit('message', 'Stop' );
+});
+    socket.on('button', function(msg){
+	console.log("Button pressed")
+    });
+
     var theTimer;
     var theSeconds = 10;
     
@@ -181,4 +189,9 @@ $(function(){
 })
 
 </script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var socket = io()
+</script>
+
 </html>
